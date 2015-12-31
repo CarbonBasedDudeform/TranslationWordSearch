@@ -12,8 +12,6 @@ var pieces = [new letterPiece("F", 0, 0),
 
 function init() {
   console.log("Game starting");
-  context.font = "2em helvetica";
-  context.textAlign = "center";
   //this is wasteful but easy
   window.setInterval(gameLoop, fps);
 }
@@ -24,7 +22,7 @@ function gameLoop() {
 }
 
 function render() {
-  pieces.forEach(function(elem){
+  pieces.forEach(function(elem) {
     elem.render();
   });
 }

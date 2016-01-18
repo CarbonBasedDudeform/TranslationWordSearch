@@ -1,3 +1,5 @@
+//contains information on a letter on the board
+//mostly, the letter displayed, the rest is for rendering.
 function letterPiece(letterVal, x, y) {
   this.letter = letterVal;
   this.x = x;

@@ -10,6 +10,8 @@ var pieces = [new letterPiece("F", 0, 0),
               new letterPiece("A", 200, 0),
               new letterPiece("R", 250, 0)];
 
+var player = new controller();
+
 function init() {
   console.log("Game starting");
   //this is wasteful but easy
@@ -29,4 +31,18 @@ function render() {
 
 function checkWinConditions() {
 
+}
+
+function onMouseDown(mouseEvent) {
+  player.StartDrag();
+}
+
+function onMouseMove(mouseEvent) {
+  if (player.IsDragging) {
+    console.log(player.CheckSelect(pieces[0], mouseEvent));
+  }
+}
+
+function onMouseUp(mouseEvent) {
+  player.StopDrag();
 }

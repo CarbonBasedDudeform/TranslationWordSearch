@@ -19,7 +19,6 @@ function init() {
 }
 
 function gameLoop() {
-  checkWinConditions();
   render();
 }
 
@@ -30,7 +29,15 @@ function render() {
 }
 
 function checkWinConditions() {
+  console.log(player.SelectedPieces);
+  reset();
+}
 
+function reset() {
+  player.Clear();
+  pieces.forEach(function(elem){
+    elem.IsSelected = false;
+  });
 }
 
 function onMouseDown(mouseEvent) {
@@ -39,10 +46,16 @@ function onMouseDown(mouseEvent) {
 
 function onMouseMove(mouseEvent) {
   if (player.IsDragging) {
-    console.log(player.CheckSelect(pieces[0], mouseEvent));
+    pieces.forEach(function(elem){
+      if (player.CheckSelect(elem, mouseEvent)) {
+        elem.IsSelected = true;
+        player.SelectedPieces.push(elem.letter);
+      }
+    });
   }
 }
 
 function onMouseUp(mouseEvent) {
   player.StopDrag();
+  checkWinConditions();
 }

@@ -18,8 +18,15 @@ function controller() {
       return MouseX > X && MouseX < (X+Width);
     }
 
-    return Intersection(LetterPiece.x, MouseEvent.offsetX, LetterPiece.width)
+    return LetterPiece.IsSelected == false
+        && Intersection(LetterPiece.x, MouseEvent.offsetX, LetterPiece.width)
         && Intersection(LetterPiece.y, MouseEvent.offsetY, LetterPiece.height);
+  }
+
+  this.SelectedPieces = [];
+
+  this.Clear = function() {
+    this.SelectedPieces = [];
   }
 }
 

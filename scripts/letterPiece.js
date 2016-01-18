@@ -6,6 +6,7 @@ function letterPiece(letterVal, x, y) {
   this.y = y;
   this.width = 50;
   this.height = 50;
+  this.IsSelected = false;
 
   this.render = function() {
     this.renderBackground();

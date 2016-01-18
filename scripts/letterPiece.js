@@ -9,8 +9,11 @@ function letterPiece(letterVal, x, y) {
   this.IsSelected = false;
 
   this.render = function() {
+    context.save();
     this.renderBackground();
+    this.renderForeground();
     this.renderLetter();
+    context.restore();
   }
 
   this.renderBackground = function() {
@@ -23,5 +26,14 @@ function letterPiece(letterVal, x, y) {
     var measure = context.measureText(this.letter);
     context.fillStyle = "red";
     context.fillText(this.letter, this.x +this.width/2, this.y + this.height/2 + measure.width/2);
+  }
+
+  this.renderForeground = function() {
+    if (this.IsSelected) {
+      var opacity = 0;
+      opacity = 0.2;
+      context.fillStyle = "rgba(100, 100, 100, "+opacity+")";
+      context.fillRect(this.x, this.y, this.width, this.height);
+    }
   }
 }

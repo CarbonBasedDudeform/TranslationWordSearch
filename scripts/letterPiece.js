@@ -25,7 +25,7 @@ function letterPiece(letterVal, x, y) {
     context.font = "2em helvetica";
     var measure = context.measureText(this.letter);
     context.fillStyle = "red";
-    context.fillText(this.letter, this.x +this.width/2, this.y + this.height/2 + measure.width/2);
+    context.fillText(this.letter, this.x +this.width/2 - measure.width/2, this.y + this.height/2 + measure.width/2);
   }
 
   this.renderForeground = function() {

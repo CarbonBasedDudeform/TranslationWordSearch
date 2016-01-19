@@ -11,26 +11,26 @@ var pieces = [new letterPiece("F", 0, 0),
               new letterPiece("R", 250, 0)];
 
 var player = new controller();
-
-function init() {
-  console.log("Game starting");
-  //this is wasteful but easy
-  window.setInterval(gameLoop, fps);
-}
-
-function gameLoop() {
-  render();
-}
-
 function render() {
   pieces.forEach(function(elem) {
     elem.render();
   });
 }
 
+//render is now called after each "event"
+//an "event" is similar to the philosophical idea of an event
+//events include the game starting, the user interactions, the win conditions being met, etc.
+//in other words, there's no point in calling render() every 30 ms when nothing is happening.
+//it only needs to be called when something happens - an event.
+function init() {
+  console.log("Game starting");
+  render();
+}
+
 function checkWinConditions() {
   console.log(player.SelectedPieces);
   reset();
+  render();
 }
 
 function reset() {
@@ -38,10 +38,12 @@ function reset() {
   pieces.forEach(function(elem){
     elem.IsSelected = false;
   });
+  render();
 }
 
 function onMouseDown(mouseEvent) {
   player.StartDrag();
+  render();
 }
 
 function onMouseMove(mouseEvent) {
@@ -53,6 +55,7 @@ function onMouseMove(mouseEvent) {
       }
     });
   }
+  render();
 }
 
 function onMouseUp(mouseEvent) {

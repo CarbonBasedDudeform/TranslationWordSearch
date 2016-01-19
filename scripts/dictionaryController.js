@@ -3,6 +3,7 @@ function addWords(){
   var targetWord = document.getElementsByName("targetLangWord")[0].value;
   if (AreValidWords(subjectWord, targetWord)) {
     alert("awesome");
+    localStorage.setItem(subjectWord, targetWord);
   } else {
     alert("Sorry, no punctuation allowed. Please only use letters.")
   }

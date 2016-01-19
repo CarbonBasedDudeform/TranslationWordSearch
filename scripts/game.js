@@ -19,7 +19,9 @@ function render() {
 //it only needs to be called when something happens - an event.
 function init() {
   console.log("Game starting");
-  pieces = createBoard(loadWords());
+  pieces = createBoard();
+  addRealWords(loadWords());
+  addMess();
   render();
 }
 
@@ -36,18 +38,37 @@ function loadWords() {
   return wordsToUse;
 }
 
-function createBoard(words) {
+function createBoard() {
   console.log("Creating Board");
-  console.log(words);
   var pieces = [];
-  words.forEach(function(elem, wordIndex) {
-    var letters = elem.split('');
-    letters.forEach(function(letter, index){
-      pieces.push(new letterPiece(letter, 50*index, 50*wordIndex));
-    });
-  });
+  for(var i = 0; i < 400; i += 50) {
+    for(var j = 0; j < 400; j += 50) {
+      pieces.push(new letterPiece("", i, j));
+    }
+  }
 
   return pieces;
+}
+
+function addRealWords(words) {
+  console.log("adding real words");
+  console.log(words);
+  words.forEach(function(word, wordIndex) {
+    var letters = word.split('');
+    letters.forEach(function(letter, index){
+      pieces[wordIndex*8 + index].letter = letter;
+    });
+  });
+}
+
+//Mess being the non-words, the random gibberish to fill in the gaps
+function addMess() {
+  console.log("Adding Mess");
+  pieces.forEach(function(elem){
+    if (elem.letter == "") {
+      elem.letter = "X";
+    }
+  });
 }
 
 function checkWinConditions() {

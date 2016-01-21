@@ -5,6 +5,7 @@ var context = canvas.getContext("2d");
 var fps = 30;
 var pieces = [];
 
+var dictionary = new dictionaryController();
 var player = new controller();
 function render() {
   pieces.forEach(function(elem) {

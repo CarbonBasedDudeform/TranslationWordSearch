@@ -52,9 +52,14 @@ function addRealWords(words) {
 //Mess being the non-words, the random gibberish to fill in the gaps
 function addMess() {
   console.log("Adding Mess");
+  function randomLetter() {
+    var numberOfLettersInAlphabet = 26;
+    var ASCIICodeForCapitalA = 97;
+    return String.fromCharCode(ASCIICodeForCapitalA + (Math.random() * numberOfLettersInAlphabet) );
+  }
   pieces.forEach(function(elem){
     if (elem.letter == "") {
-      elem.letter = "X";
+      elem.letter = randomLetter();
     }
   });
 }

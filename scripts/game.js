@@ -21,22 +21,9 @@ function render() {
 function init() {
   console.log("Game starting");
   pieces = createBoard();
-  addRealWords(loadWords());
+  addRealWords(dictionary.loadWords());
   addMess();
   render();
-}
-
-function loadWords() {
-  console.log("Loading words");
-  var wordsToUse = [];
-  //for now, use basic "grab first 10 words" algorithm.
-  //in the future, will want to spice it up a bit.
-  var amountToGrab = Math.min(localStorage.length, 10);
-  for(var i = 0; i < amountToGrab; i++) {
-    wordsToUse.push(localStorage.key(i));
-  }
-
-  return wordsToUse;
 }
 
 function createBoard() {

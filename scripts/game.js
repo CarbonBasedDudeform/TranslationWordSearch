@@ -25,9 +25,6 @@ function init() {
 }
 
 function checkWinConditions() {
-  console.log(wordsOnBoard);
-  console.log(player.SelectedPieces);
-  console.log(activeBoard);
   var win = activeBoard.checkWinConditions(player.SelectedPieces);
 
   reset();
@@ -48,8 +45,6 @@ function onMouseDown(mouseEvent) {
 
 function onMouseMove(mouseEvent) {
   if (player.IsDragging) {
-    console.log("derasdasd");
-    console.log(activeBoard.getWordsOnBoard());
     activeBoard.getPieces().forEach(function(elem){
       if (player.CheckSelect(elem, mouseEvent)) {
         elem.IsSelected = true;

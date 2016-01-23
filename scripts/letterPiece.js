@@ -8,8 +8,6 @@ function letterPiece(letterVal, x, y) {
   this.height = 50;
   this.IsSelected = false;
   this.IsAWinner = false;
-  //this.context = ctx;
-
 
   this.render = function(context) {
     context.save();

@@ -41,7 +41,6 @@ function board(canvasID) {
 
   this.addRealWords = function(words) {
     console.log("adding real words");
-    console.log(words);
     var pcs = this.pieces;
     words.forEach(function(word, wordIndex) {
       var letters = word.split('');
@@ -90,17 +89,13 @@ function board(canvasID) {
     var winningWords = [];
     var self = this;
     this.wordsOnBoard.forEach(function(word){
-      console.log(word);
       if(CheckWordIsAWin(word, selectedWord)) {
-        console.log("what the");
         winningWords.push(word);
         self.PaintBoardWinner();
       }
     })
 
     this.EnsureNoRepeatWins(winningWords);
-    console.log("bderp");
-    console.log(wordsOnBoard);
     return winningWords.length > 0;
   }
 

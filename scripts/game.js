@@ -94,6 +94,14 @@ function EnsureNoRepeatWins(winningWords) {
   })
 }
 
+function PaintBoardWinner() {
+  pieces.forEach(function(elem) {
+    if (elem.IsSelected) {
+      elem.IsAWinner = true;
+    }
+  });
+}
+
 function checkWinConditions() {
   console.log(wordsOnBoard);
   console.log(player.SelectedPieces);
@@ -101,6 +109,7 @@ function checkWinConditions() {
   wordsOnBoard.forEach(function(word){
     if(CheckWordIsAWin(word)) {
       winningWords.push(word);
+      PaintBoardWinner();
     }
   })
 

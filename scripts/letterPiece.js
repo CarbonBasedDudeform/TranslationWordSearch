@@ -7,6 +7,7 @@ function letterPiece(letterVal, x, y) {
   this.width = 50;
   this.height = 50;
   this.IsSelected = false;
+  this.IsAWinner = false;
 
   this.render = function() {
     context.save();
@@ -33,6 +34,11 @@ function letterPiece(letterVal, x, y) {
       var opacity = 0;
       opacity = 0.2;
       context.fillStyle = "rgba(100, 100, 100, "+opacity+")";
+      context.fillRect(this.x, this.y, this.width, this.height);
+    }
+
+    if (this.IsAWinner) {
+      context.fillStyle = "rgba(0, 100, 0, "+0.2+")";
       context.fillRect(this.x, this.y, this.width, this.height);
     }
   }

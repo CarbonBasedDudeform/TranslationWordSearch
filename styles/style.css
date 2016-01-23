@@ -12,6 +12,14 @@ html, body {
   vertical-align: middle;
 }
 
+#progressBarOverlay {
+  background-color: green;
+  width: 0%;
+  height: 3em;
+  margin: -2.1em;
+  margin-left: -1.5em;
+}
+
 #container {
   text-align: center;
 }

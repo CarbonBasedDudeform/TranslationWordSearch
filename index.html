@@ -5,7 +5,11 @@
     <link rel="stylesheet" href="./styles/style.css">
   </head>
   <body onload="init()">
-    <div id="progressBar">0%</div>
+    <div id="progressBar">
+      <div id="progressText">0%</div>
+      <div id="progressBarOverlay"></div>
+    </div>
+
     <div id="container">
       <canvas id="lienzo" width="400" height="400"
               onmousedown="onMouseDown(event)"

@@ -17,12 +17,14 @@ function render() {
 //in other words, there's no point in calling render() every 30 ms when nothing is happening.
 //it only needs to be called when something happens - an event.
 var wordsOnBoard = [];
+var total = 1;
 function init() {
   console.log("Game starting");
   var words = dictionary.loadTargetWords();
   targetLangBoard.init(words);
   targetLangBoard.SetWordToFind(words);
   subjectLangBoard.init(dictionary.loadSubjectWords(words));
+  total = words.length;
   render();
 }
 
@@ -74,6 +76,13 @@ function switchBoards() {
   }
   else {
     activeBoard = targetLangBoard;
+    updateProgressBar();
   }
   activeBoard.show();
+}
+
+function updateProgressBar() {
+  var percentageDone = ((total - activeBoard.getWordsOnBoard().length) / total) * 100;
+  document.getElementById("progressBarOverlay").style.width = percentageDone + "%";
+  document.getElementById("progressText").innerHTML = percentageDone.toFixed(0) + "%";
 }

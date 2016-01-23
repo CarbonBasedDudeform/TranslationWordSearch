@@ -122,4 +122,13 @@ function board(canvasID) {
       elem.IsSelected = false;
     });
   }
+
+  this.hide = function() {
+    //should probably switch to proper css
+    this.canvas.style.display = "none";
+  }
+
+  this.show = function() {
+    this.canvas.style.display = "";
+  }
 }

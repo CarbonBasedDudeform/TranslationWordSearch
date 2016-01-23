@@ -64,6 +64,12 @@ function onMouseUp(mouseEvent) {
 }
 
 function switchBoards() {
-  if (activeBoard == targetLangBoard) activeBoard = subjectLangBoard;
-  else activeBoard = targetLangBoard;
+  activeBoard.hide();
+  if (activeBoard == targetLangBoard) {
+    activeBoard = subjectLangBoard;
+  }
+  else {
+    activeBoard = targetLangBoard;
+  }
+  activeBoard.show();
 }

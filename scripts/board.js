@@ -14,12 +14,14 @@ function board(canvasID) {
     });
   }
 
-  this.wordsOnBoards = [];
+  this.wordsOnBoard = [];
+  this.getWordsOnBoard = function() {
+    return this.wordsOnBoard;
+  }
   this.init = function(words) {
     this.pieces = createBoard();
-    console.log(this.pieces);
-    wordsOnBoard = words;
-    this.addRealWords(wordsOnBoard);
+    this.wordsOnBoard = words;
+    this.addRealWords(this.wordsOnBoard);
     this.addMess();
   }
 
@@ -65,11 +67,12 @@ function board(canvasID) {
   }
 
   //removes winning words from the wordsOnBoard array so that they can't be "won" again
-  function EnsureNoRepeatWins(winningWords) {
+  this.EnsureNoRepeatWins = function(winningWords) {
+    var wob = this.wordsOnBoard;
     winningWords.forEach(function(word) {
-      wordsOnBoard.forEach(function(boardWord, index) {
+      wob.forEach(function(boardWord, index) {
         if (word == boardWord) {
-          wordsOnBoard.splice(index, 1);
+          wob.splice(index, 1);
         }
       })
     })
@@ -85,16 +88,20 @@ function board(canvasID) {
 
   this.checkWinConditions = function(selectedWord) {
     var winningWords = [];
-    wordsOnBoard.forEach(function(word){
+    var self = this;
+    this.wordsOnBoard.forEach(function(word){
       console.log(word);
       if(CheckWordIsAWin(word, selectedWord)) {
+        console.log("what the");
         winningWords.push(word);
-        PaintBoardWinner();
+        self.PaintBoardWinner();
       }
     })
 
-    EnsureNoRepeatWins(winningWords);
+    this.EnsureNoRepeatWins(winningWords);
+    console.log("bderp");
     console.log(wordsOnBoard);
+    return winningWords.length > 0;
   }
 
   //currently, only exact matches will be recognised, subsets aren't considered valid

@@ -5,10 +5,10 @@ var dictionary = new dictionaryController();
 var player = new controller();
 var targetLangBoard = new board("lienzo");
 var subjectLangBoard = new board("canvas");
+var activeBoard = targetLangBoard;
 
 function render() {
-  targetLangBoard.render();
-  subjectLangBoard.render();
+  activeBoard.render();
 }
 
 //render is now called after each "event"
@@ -27,17 +27,17 @@ function init() {
 function checkWinConditions() {
   console.log(wordsOnBoard);
   console.log(player.SelectedPieces);
-  targetLangBoard.checkWinConditions(player.SelectedPieces);
-  subjectLangBoard.checkWinConditions(player.SelectedPieces);
+  console.log(activeBoard);
+  var win = activeBoard.checkWinConditions(player.SelectedPieces);
 
   reset();
   render();
+  return win;
 }
 
 function reset() {
   player.Clear();
-  targetLangBoard.clear();
-  subjectLangBoard.clear();
+  activeBoard.clear();
   render();
 }
 
@@ -47,16 +47,10 @@ function onMouseDown(mouseEvent) {
 }
 
 function onMouseMove(mouseEvent) {
-  console.log(player.IsDragging);
   if (player.IsDragging) {
-    subjectLangBoard.getPieces().forEach(function(elem){
-      if (player.CheckSelect(elem, mouseEvent)) {
-        elem.IsSelected = true;
-        player.SelectedPieces.push(elem.letter);
-      }
-    });
-
-    targetLangBoard.getPieces().forEach(function(elem){
+    console.log("derasdasd");
+    console.log(activeBoard.getWordsOnBoard());
+    activeBoard.getPieces().forEach(function(elem){
       if (player.CheckSelect(elem, mouseEvent)) {
         elem.IsSelected = true;
         player.SelectedPieces.push(elem.letter);
@@ -68,5 +62,12 @@ function onMouseMove(mouseEvent) {
 
 function onMouseUp(mouseEvent) {
   player.StopDrag();
-  checkWinConditions();
+  if(checkWinConditions()) {
+    switchBoards();
+  }
+}
+
+function switchBoards() {
+  if (activeBoard == targetLangBoard) activeBoard = subjectLangBoard;
+  else activeBoard = targetLangBoard;
 }

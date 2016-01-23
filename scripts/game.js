@@ -19,8 +19,9 @@ function render() {
 var wordsOnBoard = [];
 function init() {
   console.log("Game starting");
-  targetLangBoard.init(dictionary.loadWords());
-  subjectLangBoard.init(["null"]);
+  var words = dictionary.loadTargetWords();
+  targetLangBoard.init(words);
+  subjectLangBoard.init(dictionary.loadSubjectWords(words));
   render();
 }
 

@@ -15,7 +15,7 @@ function dictionaryController() {
     return regEx.test(subject) && regEx.test(target);
   }
 
-  this.loadWords = function() {
+  this.loadTargetWords = function() {
     console.log("Loading words");
     var wordsToUse = [];
     //for now, use basic "grab first 10 words" algorithm.
@@ -26,5 +26,14 @@ function dictionaryController() {
     }
 
     return wordsToUse;
+  }
+
+  this.loadSubjectWords = function(targetWords) {
+    var subjectWords = [];
+    targetWords.forEach(function(word){
+      subjectWords.push(localStorage[word]);
+    });
+
+    return subjectWords;
   }
 }

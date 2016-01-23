@@ -18,10 +18,12 @@ function render() {
 //events include the game starting, the user interactions, the win conditions being met, etc.
 //in other words, there's no point in calling render() every 30 ms when nothing is happening.
 //it only needs to be called when something happens - an event.
+var wordsOnBoard = [];
 function init() {
   console.log("Game starting");
   pieces = createBoard();
-  addRealWords(dictionary.loadWords());
+  wordsOnBoard = dictionary.loadWords();
+  addRealWords(wordsOnBoard);
   addMess();
   render();
 }
@@ -64,8 +66,46 @@ function addMess() {
   });
 }
 
+//currently, only exact matches will be recognised, subsets aren't considered valid
+//ie. user selection is "hola" then it will not match with "ola", only "hola"
+function CheckWordIsAWin(word) {
+
+  function wordsMatch(subject, target) {
+    var matches = true;
+    for(var i = 0; i < target.length && matches; ++i) {
+      matches = target[i] == subject[i];
+    }
+    return matches;
+  }
+
+  var lettersOfWord = word.split('');
+  var selectedIsSameLength = lettersOfWord.length == player.SelectedPieces.length;
+  return selectedIsSameLength && wordsMatch(lettersOfWord, player.SelectedPieces);
+}
+
+//removes winning words from the wordsOnBoard array so that they can't be "won" again
+function EnsureNoRepeatWins(winningWords) {
+  winningWords.forEach(function(word) {
+    wordsOnBoard.forEach(function(boardWord, index) {
+      if (word == boardWord) {
+        wordsOnBoard.splice(index, 1);
+      }
+    })
+  })
+}
+
 function checkWinConditions() {
+  console.log(wordsOnBoard);
   console.log(player.SelectedPieces);
+  var winningWords = [];
+  wordsOnBoard.forEach(function(word){
+    if(CheckWordIsAWin(word)) {
+      winningWords.push(word);
+    }
+  })
+
+  EnsureNoRepeatWins(winningWords);
+  console.log(wordsOnBoard);
   reset();
   render();
 }

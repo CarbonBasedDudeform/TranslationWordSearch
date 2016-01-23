@@ -21,6 +21,7 @@ function init() {
   console.log("Game starting");
   var words = dictionary.loadTargetWords();
   targetLangBoard.init(words);
+  targetLangBoard.SetWordToFind(words);
   subjectLangBoard.init(dictionary.loadSubjectWords(words));
   render();
 }
@@ -28,7 +29,6 @@ function init() {
 function checkWinConditions() {
   var win = activeBoard.checkWinConditions(player.SelectedPieces);
 
-  reset();
   render();
   return win;
 }
@@ -61,12 +61,16 @@ function onMouseUp(mouseEvent) {
   if(checkWinConditions()) {
     switchBoards();
   }
+
+  reset();
 }
 
 function switchBoards() {
   activeBoard.hide();
   if (activeBoard == targetLangBoard) {
     activeBoard = subjectLangBoard;
+    var newWordToFind = dictionary.getWordToFind(player.SelectedPieces);
+    activeBoard.SetWordToFind(newWordToFind);
   }
   else {
     activeBoard = targetLangBoard;

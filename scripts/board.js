@@ -85,10 +85,16 @@ function board(canvasID) {
     });
   }
 
+  this.wordsToFind = [];
+  this.SetWordToFind = function(word) {
+    this.wordsToFind = word;
+  }
+
   this.checkWinConditions = function(selectedWord) {
     var winningWords = [];
     var self = this;
-    this.wordsOnBoard.forEach(function(word){
+    this.wordsToFind.forEach(function(word){
+      console.log(word);
       if(CheckWordIsAWin(word, selectedWord)) {
         winningWords.push(word);
         self.PaintBoardWinner();

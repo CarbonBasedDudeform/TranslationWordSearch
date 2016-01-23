@@ -36,4 +36,9 @@ function dictionaryController() {
 
     return subjectWords;
   }
+
+  this.getWordToFind = function(wordAsArray) {
+    var word = wordAsArray.join('');
+    return [localStorage[word]];
+  }
 }

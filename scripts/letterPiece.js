@@ -8,28 +8,30 @@ function letterPiece(letterVal, x, y) {
   this.height = 50;
   this.IsSelected = false;
   this.IsAWinner = false;
+  //this.context = ctx;
 
-  this.render = function() {
+
+  this.render = function(context) {
     context.save();
-    this.renderBackground();
-    this.renderForeground();
-    this.renderLetter();
+    this.renderBackground(context);
+    this.renderForeground(context);
+    this.renderLetter(context);
     context.restore();
   }
 
-  this.renderBackground = function() {
+  this.renderBackground = function(context) {
     context.fillStyle = "beige";
     context.fillRect(this.x, this.y, this.width, this.height);
   }
 
-  this.renderLetter = function() {
+  this.renderLetter = function(context) {
     context.font = "2em helvetica";
     var measure = context.measureText(this.letter);
     context.fillStyle = "red";
     context.fillText(this.letter, this.x +this.width/2 - measure.width/2, this.y + this.height/2 + measure.width/2);
   }
 
-  this.renderForeground = function() {
+  this.renderForeground = function(context) {
     if (this.IsSelected) {
       var opacity = 0;
       opacity = 0.2;

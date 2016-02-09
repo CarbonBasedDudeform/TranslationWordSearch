@@ -1,6 +1,4 @@
 console.log("Game starting up");
-var fps = 30;
-
 var dictionary = new dictionaryController();
 var player = new controller();
 var targetLangBoard = new board("lienzo");

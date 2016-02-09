@@ -1,4 +1,6 @@
 function board(canvasID) {
+  var BOARD_SIZE = 750;
+  var PIECE_SIZE = 50;
   console.log(canvasID);
   this.canvas = document.getElementById(canvasID);
   this.context = this.canvas.getContext("2d");
@@ -31,22 +33,79 @@ function board(canvasID) {
     var ctx = canvas.getContext("2d");
     console.log(canvasID);
     var pcs = [];
-    for(var i = 0; i < 400; i += 50) {
-      for(var j = 0; j < 400; j += 50) {
+    for(var i = 0; i < BOARD_SIZE; i += PIECE_SIZE) {
+      for(var j = 0; j < BOARD_SIZE; j += PIECE_SIZE) {
         pcs.push(new letterPiece("", i, j));
       }
     }
     return pcs;
   }
 
+  this.scatter = function(letters) {
+    function DecideOrientation(root) {
+      var VERTICAL = 1;
+      var HORIZONTAL = BOARD_SIZE/PIECE_SIZE;
+      var randomNum = Math.floor((Math.random()*100));
+      if (randomNum % 2 == 0) {
+        return HORIZONTAL;
+      } else {
+        return VERTICAL;
+      }
+    }
+
+    var perimeter = (BOARD_SIZE/PIECE_SIZE);
+    function DecideRoot(word) {
+      var boardArea =  perimeter*perimeter;
+      var root = Math.floor((Math.random() * boardArea));
+      if (((root%perimeter) + word.length) >= perimeter)
+      {
+        root -= word.length;
+      }
+      return root;
+    }
+
+    function ValidateRoot(root, word, pieces, orientation) {
+      if (root < 0) {
+        return false;
+      }
+
+      var noClashes = true;
+      word.forEach(function(letter, index){
+        if (typeof pieces[root+index*orientation] == "undefined") {
+          //invalid due to location being out of bounds
+          noClashes = false;
+        } else if (pieces[root+index*orientation].letter != "") {
+          //invalid due to location already in use
+          noClashes = false;
+        }
+      });
+
+      return noClashes;
+    }
+
+    function GetValidRoot(letters, orientation) {
+      var root = DecideRoot(letters);
+      while (ValidateRoot(root, letters, pcs, orientation) == false) {
+        root = DecideRoot(letters);
+      }
+      return root;
+    }
+
+    var pcs = this.pieces;
+    var offset = DecideOrientation(root);
+    var root = GetValidRoot(letters, offset);
+
+    letters.forEach(function(letter, index){
+      pcs[root + index * offset].letter = letter;
+    });
+  }
+
   this.addRealWords = function(words) {
     console.log("adding real words");
-    var pcs = this.pieces;
+    var self = this;
     words.forEach(function(word, wordIndex) {
       var letters = word.split('');
-      letters.forEach(function(letter, index){
-        pcs[wordIndex*8 + index].letter = letter;
-      });
+      self.scatter(letters);
     });
   }
 

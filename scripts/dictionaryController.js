@@ -1,11 +1,18 @@
 function dictionaryController() {
-  this.addWords = function(){
+  this.addWord = function(subjectWord, targetWord){
+    if (AreValidWords(subjectWord, targetWord)) {
+      localStorage.setItem(subjectWord, targetWord);
+      return true;
+    }
+
+    return false;
+  }
+
+  this.addWords = function() {
     var subjectWord = document.getElementsByName("subjectLangWord")[0].value;
     var targetWord = document.getElementsByName("targetLangWord")[0].value;
-    if (AreValidWords(subjectWord, targetWord)) {
-      alert("awesome");
-      localStorage.setItem(subjectWord, targetWord);
-    } else {
+    let succesfullyAddedWord = this.addWord(subjectWord, targetWord);
+    if (succesfullyAddedWord == false) {
       alert("Sorry, no punctuation allowed. Please only use letters.")
     }
   }

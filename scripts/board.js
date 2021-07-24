@@ -1,6 +1,6 @@
 function board(canvasID) {
-  var BOARD_SIZE = 750;
-  var PIECE_SIZE = 50;
+  const BOARD_SIZE = 750;
+  const PIECE_SIZE = 50;
   console.log(canvasID);
   this.canvas = document.getElementById(canvasID);
   this.context = this.canvas.getContext("2d");
@@ -10,7 +10,7 @@ function board(canvasID) {
   }
 
   this.render = function() {
-    var context = this.context;
+    let context = this.context;
     this.pieces.forEach(function(elem) {
       elem.render(context);
     });
@@ -30,11 +30,11 @@ function board(canvasID) {
 
   function createBoard() {
     console.log("Creating Board");
-    var ctx = canvas.getContext("2d");
+    let ctx = canvas.getContext("2d");
     console.log(canvasID);
-    var pcs = [];
-    for(var i = 0; i < BOARD_SIZE; i += PIECE_SIZE) {
-      for(var j = 0; j < BOARD_SIZE; j += PIECE_SIZE) {
+    let pcs = [];
+    for(let i = 0; i < BOARD_SIZE; i += PIECE_SIZE) {
+      for(let j = 0; j < BOARD_SIZE; j += PIECE_SIZE) {
         pcs.push(new letterPiece("", i, j));
       }
     }
@@ -42,21 +42,22 @@ function board(canvasID) {
   }
 
   this.scatter = function(letters) {
-    function DecideOrientation(root) {
-      var VERTICAL = 1;
-      var HORIZONTAL = BOARD_SIZE/PIECE_SIZE;
-      var randomNum = Math.floor((Math.random()*100));
-      if (randomNum % 2 == 0) {
+    function DecideOrientation() {
+      const VERTICAL = 1;
+      const HORIZONTAL = BOARD_SIZE/PIECE_SIZE;
+      const randomNum = Math.floor((Math.random()*100));
+      const randomIsEven = randomNum % 2 == 0;
+      if (randomIsEven) {
         return HORIZONTAL;
       } else {
         return VERTICAL;
       }
     }
 
-    var perimeter = (BOARD_SIZE/PIECE_SIZE);
+    const perimeter = (BOARD_SIZE/PIECE_SIZE);
     function DecideRoot(word) {
-      var boardArea =  perimeter*perimeter;
-      var root = Math.floor((Math.random() * boardArea));
+      const boardArea =  perimeter*perimeter;
+      let root = Math.floor((Math.random() * boardArea));
       if (((root%perimeter) + word.length) >= perimeter)
       {
         root -= word.length;
@@ -69,31 +70,29 @@ function board(canvasID) {
         return false;
       }
 
-      var noClashes = true;
+      let noClashes = true;
       word.forEach(function(letter, index){
-        if (typeof pieces[root+index*orientation] == "undefined") {
-          //invalid due to location being out of bounds
-          noClashes = false;
-        } else if (pieces[root+index*orientation].letter != "") {
-          //invalid due to location already in use
-          noClashes = false;
-        }
+        console.log(pieces[root+index*orientation]);
+        const outOfBounds = typeof pieces[root+index*orientation] == "undefined";
+        const locationAlreadyInUse = !outOfBounds && pieces[root+index*orientation].letter != "";
+        noClashes = !locationAlreadyInUse;
+        console.log(noClashes);
       });
 
       return noClashes;
     }
 
-    function GetValidRoot(letters, orientation) {
-      var root = DecideRoot(letters);
+    function GetValidRoot(letters, orientation, pcs) {
+      let root = DecideRoot(letters);
       while (ValidateRoot(root, letters, pcs, orientation) == false) {
         root = DecideRoot(letters);
       }
       return root;
     }
 
-    var pcs = this.pieces;
-    var offset = DecideOrientation(root);
-    var root = GetValidRoot(letters, offset);
+    let pcs = this.pieces;
+    const offset = DecideOrientation();
+    const root = GetValidRoot(letters, offset, pcs);
 
     letters.forEach(function(letter, index){
       pcs[root + index * offset].letter = letter;
@@ -102,9 +101,9 @@ function board(canvasID) {
 
   this.addRealWords = function(words) {
     console.log("adding real words");
-    var self = this;
+    let self = this;
     words.forEach(function(word, wordIndex) {
-      var letters = word.split('');
+      const letters = word.split('');
       self.scatter(letters);
     });
   }
@@ -113,12 +112,14 @@ function board(canvasID) {
   this.addMess = function() {
     console.log("Adding Mess");
     function randomLetter() {
-      var numberOfLettersInAlphabet = 26;
-      var ASCIICodeForCapitalA = 97;
-      return String.fromCharCode(ASCIICodeForCapitalA + (Math.random() * numberOfLettersInAlphabet) );
+      const numberOfLettersInAlphabet = 26;
+      const ASCIICodeForCapitalA = 97;
+      const randomLetter = String.fromCharCode(ASCIICodeForCapitalA + (Math.random() * numberOfLettersInAlphabet) );
+      return randomLetter;
     }
     this.pieces.forEach(function(elem){
-      if (elem.letter == "") {
+      const emptyLocation = elem.letter == "";
+      if (emptyLocation) {
         elem.letter = randomLetter();
       }
     });
@@ -126,11 +127,11 @@ function board(canvasID) {
 
   //removes winning words from the wordsOnBoard array so that they can't be "won" again
   this.EnsureNoRepeatWins = function(winningWords) {
-    var wob = this.wordsOnBoard;
+    let wordsOnBoard = this.wordsOnBoard;
     winningWords.forEach(function(word) {
-      wob.forEach(function(boardWord, index) {
+      wordsOnBoard.forEach(function(boardWord, index) {
         if (word == boardWord) {
-          wob.splice(index, 1);
+          wordsOnBoard.splice(index, 1);
         }
       })
     })
@@ -150,8 +151,8 @@ function board(canvasID) {
   }
 
   this.checkWinConditions = function(selectedWord) {
-    var winningWords = [];
-    var self = this;
+    let winningWords = [];
+    let self = this;
     this.wordsToFind.forEach(function(word){
       console.log(word);
       if(CheckWordIsAWin(word, selectedWord)) {
@@ -169,16 +170,16 @@ function board(canvasID) {
   function CheckWordIsAWin(word, selectedWord) {
 
     function wordsMatch(subject, target) {
-      var matches = true;
-      for(var i = 0; i < target.length && matches; ++i) {
+      let matches = true;
+      for(let i = 0; i < target.length && matches; ++i) {
         matches = target[i] == subject[i];
       }
       return matches;
     }
 
-    var lettersOfWord = word.split('');
+    let lettersOfWord = word.split('');
 
-    var selectedIsSameLength = lettersOfWord.length == selectedWord.length;
+    let selectedIsSameLength = lettersOfWord.length == selectedWord.length;
     return selectedIsSameLength && wordsMatch(lettersOfWord, selectedWord);
   }
 

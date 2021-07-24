@@ -24,15 +24,14 @@ function letterPiece(letterVal, x, y) {
 
   this.renderLetter = function(context) {
     context.font = "2em helvetica";
-    var measure = context.measureText(this.letter);
+    const measure = context.measureText(this.letter);
     context.fillStyle = "red";
     context.fillText(this.letter, this.x +this.width/2 - measure.width/2, this.y + this.height/2 + measure.width/2);
   }
 
   this.renderForeground = function(context) {
     if (this.IsSelected) {
-      var opacity = 0;
-      opacity = 0.2;
+      const opacity = 0.2;
       context.fillStyle = "rgba(100, 100, 100, "+opacity+")";
       context.fillRect(this.x, this.y, this.width, this.height);
     }

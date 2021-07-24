@@ -1,10 +1,10 @@
+
 console.log("Game starting up");
 let dictionary = new dictionaryController();
 const player = new controller();
 let targetLangBoard = new board("lienzo");
 let subjectLangBoard = new board("canvas");
 let activeBoard = targetLangBoard;
-
 function render() {
   activeBoard.render();
 }
@@ -18,12 +18,23 @@ let wordsOnBoard = [];
 let total = 1;
 function init() {
   console.log("Game starting");
+  checkStartingConditions();
+  dictionary.checkStartingConditionsCallback = checkStartingConditions;
+}
+
+function checkStartingConditions() {
+  const minimumWords = 10;
   const words = dictionary.loadTargetWords();
-  targetLangBoard.init(words);
-  targetLangBoard.SetWordToFind(words);
-  subjectLangBoard.init(dictionary.loadSubjectWords(words));
-  total = words.length;
-  render();
+  const enoughWords = words.length >= minimumWords;
+  if (enoughWords) {
+    targetLangBoard.init(words);
+    targetLangBoard.SetWordToFind(words);
+    subjectLangBoard.init(dictionary.loadSubjectWords(words));
+    total = words.length;
+    render();
+  } else {
+    activeBoard.renderStartMessage(minimumWords - words.length);
+  }
 }
 
 function checkWinConditions() {

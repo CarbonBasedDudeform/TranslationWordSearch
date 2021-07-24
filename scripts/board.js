@@ -16,6 +16,16 @@ function board(canvasID) {
     });
   }
 
+  this.renderStartMessage = function(wordsRequired) {
+    this.context.fillStyle = "grey";
+    this.context.fillRect(0,0, BOARD_SIZE, BOARD_SIZE);
+    this.context.font = "2em helvetica";
+    const messsage = `Please add ${wordsRequired} to play.`;
+    const measure = this.context.measureText(messsage);
+    this.context.fillStyle = "black";
+    this.context.fillText(messsage, (BOARD_SIZE - measure.width)/2, BOARD_SIZE/2);
+  }
+
   this.wordsOnBoard = [];
   this.getWordsOnBoard = function() {
     return this.wordsOnBoard;
@@ -70,32 +80,37 @@ function board(canvasID) {
         return false;
       }
 
-      let noClashes = true;
+      let rootIsValid = true;
       word.forEach(function(letter, index){
-        console.log(pieces[root+index*orientation]);
-        const outOfBounds = typeof pieces[root+index*orientation] == "undefined";
-        const locationAlreadyInUse = !outOfBounds && pieces[root+index*orientation].letter != "";
-        noClashes = !locationAlreadyInUse;
-        console.log(noClashes);
+        const inBound = root+index*orientation < pieces.length;//typeof pieces[root+index*orientation] != "undefined";
+        const locationAlreadyInUse = inBound && pieces[root+index*orientation].letter != "";
+
+        if (!inBound) {
+          rootIsValid = false;
+        }
+
+        if (locationAlreadyInUse) {
+          rootIsValid = false;
+        }
       });
 
-      return noClashes;
+      return rootIsValid;
     }
 
-    function GetValidRoot(letters, orientation, pcs) {
+    function GetValidRoot(letters, orientation, pieces) {
       let root = DecideRoot(letters);
-      while (ValidateRoot(root, letters, pcs, orientation) == false) {
+      while (ValidateRoot(root, letters, pieces, orientation) == false) {
         root = DecideRoot(letters);
       }
       return root;
     }
 
-    let pcs = this.pieces;
-    const offset = DecideOrientation();
-    const root = GetValidRoot(letters, offset, pcs);
+    let pieces = this.pieces;
+    const orientation = DecideOrientation();
+    const root = GetValidRoot(letters, orientation, pieces);
 
     letters.forEach(function(letter, index){
-      pcs[root + index * offset].letter = letter;
+      pieces[root + index * orientation].letter = letter;
     });
   }
 

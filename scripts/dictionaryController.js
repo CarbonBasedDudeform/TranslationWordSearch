@@ -1,4 +1,7 @@
 function dictionaryController() {
+
+  this.checkStartingConditionsCallback = function() {};
+  
   this.addWord = function(subjectWord, targetWord) {
     if (AreValidWords(subjectWord, targetWord)) {
       localStorage.setItem(subjectWord, targetWord);
@@ -16,6 +19,8 @@ function dictionaryController() {
     if (failedToAddWord) {
       alert("Sorry, no punctuation allowed. Please only use letters.")
     }
+
+    this.checkStartingConditionsCallback();
   }
 
   function AreValidWords(subject, target) {

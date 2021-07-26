@@ -23,7 +23,7 @@ function init() {
 }
 
 function checkStartingConditions() {
-  const minimumWords = 10;
+  const minimumWords = 3;
   const words = dictionary.loadTargetWords();
   const enoughWords = words.length >= minimumWords;
   if (enoughWords) {

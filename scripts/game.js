@@ -1,10 +1,10 @@
-console.log("Game starting up");
-var dictionary = new dictionaryController();
-var player = new controller();
-var targetLangBoard = new board("lienzo");
-var subjectLangBoard = new board("canvas");
-var activeBoard = targetLangBoard;
 
+console.log("Game starting up");
+let dictionary = new dictionaryController();
+const player = new controller();
+let targetLangBoard = new board("lienzo");
+let subjectLangBoard = new board("canvas");
+let activeBoard = targetLangBoard;
 function render() {
   activeBoard.render();
 }
@@ -14,21 +14,31 @@ function render() {
 //events include the game starting, the user interactions, the win conditions being met, etc.
 //in other words, there's no point in calling render() every 30 ms when nothing is happening.
 //it only needs to be called when something happens - an event.
-var wordsOnBoard = [];
-var total = 1;
+let wordsOnBoard = [];
+let total = 1;
 function init() {
   console.log("Game starting");
-  var words = dictionary.loadTargetWords();
-  targetLangBoard.init(words);
-  targetLangBoard.SetWordToFind(words);
-  subjectLangBoard.init(dictionary.loadSubjectWords(words));
-  total = words.length;
-  render();
+  checkStartingConditions();
+  dictionary.checkStartingConditionsCallback = checkStartingConditions;
+}
+
+function checkStartingConditions() {
+  const minimumWords = 3;
+  const words = dictionary.loadTargetWords();
+  const enoughWords = words.length >= minimumWords;
+  if (enoughWords) {
+    targetLangBoard.init(words);
+    targetLangBoard.SetWordToFind(words);
+    subjectLangBoard.init(dictionary.loadSubjectWords(words));
+    total = words.length;
+    render();
+  } else {
+    activeBoard.renderStartMessage(minimumWords - words.length);
+  }
 }
 
 function checkWinConditions() {
-  var win = activeBoard.checkWinConditions(player.SelectedPieces);
-
+  const win = activeBoard.checkWinConditions(player.SelectedPieces);
   render();
   return win;
 }
@@ -69,7 +79,7 @@ function switchBoards() {
   activeBoard.hide();
   if (activeBoard == targetLangBoard) {
     activeBoard = subjectLangBoard;
-    var newWordToFind = dictionary.getWordToFind(player.SelectedPieces);
+    const newWordToFind = dictionary.getWordToFind(player.SelectedPieces);
     activeBoard.SetWordToFind(newWordToFind);
   }
   else {
@@ -80,7 +90,7 @@ function switchBoards() {
 }
 
 function updateProgressBar() {
-  var percentageDone = ((total - activeBoard.getWordsOnBoard().length) / total) * 100;
+  const percentageDone = ((total - activeBoard.getWordsOnBoard().length) / total) * 100;
   document.getElementById("progressBarOverlay").style.width = percentageDone + "%";
   document.getElementById("progressText").innerHTML = percentageDone.toFixed(0) + "%";
 }

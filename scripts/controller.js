@@ -15,7 +15,7 @@ function controller() {
   //checks whether a letter piece should be selected, if the mouse is over the letter piece.
   this.CheckSelect = function(LetterPiece, MouseEvent) {
     function Intersection(X, MouseX, Width) {
-      var bufferZone = 5; //makes it easier to select diagonally.
+      let bufferZone = 5; //makes it easier to select diagonally.
       return MouseX > X+bufferZone && MouseX < (X+Width)-bufferZone;
     }
 
